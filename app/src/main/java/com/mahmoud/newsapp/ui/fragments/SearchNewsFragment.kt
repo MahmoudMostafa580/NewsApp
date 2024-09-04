@@ -1,4 +1,4 @@
-package com.mahmoud.newsapp.fragments
+package com.mahmoud.newsapp.ui.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.mahmoud.newsapp.R
 
-class BreakingNewsFragment : Fragment() {
+class SearchNewsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +18,6 @@ class BreakingNewsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_breaking_news, container, false)
+        return inflater.inflate(R.layout.fragment_search_news, container, false)
     }
 }

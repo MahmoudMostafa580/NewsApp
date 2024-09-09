@@ -1,17 +1,16 @@
 package com.mahmoud.newsapp.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.mahmoud.newsapp.MainActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.mahmoud.newsapp.R
 import com.mahmoud.newsapp.ui.NewsViewModel
 
 class BreakingNewsFragment : Fragment() {
 
-    private lateinit var viewModel: NewsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +26,8 @@ class BreakingNewsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = (activity as MainActivity).viewModel
+        val viewModel: NewsViewModel by activityViewModels<NewsViewModel>()
+
 
     }
 }

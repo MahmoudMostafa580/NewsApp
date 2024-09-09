@@ -11,6 +11,8 @@ import com.mahmoud.newsapp.models.Article
 @TypeConverters(Converters::class)
 abstract class ArticlesDatabase : RoomDatabase() {
 
+    abstract fun getArticleDao(): ArticleDao
+
     companion object {
         private const val DB_NAME = "articles_db.db"
         private var INSTANCE: ArticlesDatabase? = null

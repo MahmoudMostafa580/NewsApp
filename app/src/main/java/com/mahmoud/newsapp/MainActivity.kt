@@ -1,6 +1,7 @@
 package com.mahmoud.newsapp
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -14,19 +15,28 @@ import com.mahmoud.newsapp.ui.NewsViewmodelFactory
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     lateinit var viewModel: NewsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        enableEdgeToEdge()
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        val newsRepository = NewsRepository(ArticlesDatabase.getInstance(this))
+        /**
+         * Initialize ViewModel
+         */
+        val newsRepository = NewsRepository()
         val viewModelFactory = NewsViewmodelFactory(newsRepository)
         viewModel = ViewModelProvider(this, viewModelFactory).get(NewsViewModel::class.java)
 
+        /**
+         * Bind layout
+         */
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        /**
+         * Handle BottomNavigationView Transition
+         */
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.newsNavHostFragment)
         navController = navHostFragment!!.findNavController()
         binding.bottomNavigationView.setupWithNavController(navController)

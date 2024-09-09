@@ -24,7 +24,7 @@ class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
     }
 
     private fun handleBreakingNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
-        if (response.isSuccessful){
+        if (response.isSuccessful) {
             response.body()?.let { responseResult ->
                 return Resource.Success(responseResult)
             }

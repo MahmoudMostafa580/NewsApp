@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mahmoud.newsapp.MainActivity
+import com.mahmoud.newsapp.R
 import com.mahmoud.newsapp.adapters.NewsAdapter
 import com.mahmoud.newsapp.databinding.FragmentSearchNewsBinding
 import com.mahmoud.newsapp.ui.NewsViewModel
@@ -44,6 +46,15 @@ class SearchNewsFragment : Fragment() {
         setupRecyclerView()
 
 
+        newsAdapter.setOnItemClickListener {
+            val bundle= Bundle().apply {
+                putSerializable("article", it)
+            }
+            findNavController().navigate(
+                R.id.action_searchNewsFragment_to_articleFragment,
+                bundle
+            )
+        }
         /**
          * Delay for listener on search edit text for search query
          */

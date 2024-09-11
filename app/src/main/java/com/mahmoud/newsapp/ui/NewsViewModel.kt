@@ -3,6 +3,7 @@ package com.mahmoud.newsapp.ui
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mahmoud.newsapp.models.Article
 import com.mahmoud.newsapp.models.NewsResponse
 import com.mahmoud.newsapp.repository.NewsRepository
 import com.mahmoud.newsapp.utils.Resource
@@ -41,8 +42,8 @@ class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
         return Resource.Error(response.message())
     }
 
-    private fun handleSearchNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse>{
-        if (response.isSuccessful){
+    private fun handleSearchNewsResponse(response: Response<NewsResponse>): Resource<NewsResponse> {
+        if (response.isSuccessful) {
             response.body()?.let { responseResult ->
                 return Resource.Success(responseResult)
             }
@@ -50,5 +51,14 @@ class NewsViewModel(val newsRepository: NewsRepository) : ViewModel() {
         return Resource.Error(response.message())
     }
 
+    fun upsert(article: Article) = viewModelScope.launch {
+        newsRepository.upsert(article)
+    }
+
+    fun getSavedNews() = newsRepository.getSavedNews()
+
+    fun deleteArticle(article: Article) = viewModelScope.launch {
+        newsRepository.deleteArticle(article)
+    }
 
 }

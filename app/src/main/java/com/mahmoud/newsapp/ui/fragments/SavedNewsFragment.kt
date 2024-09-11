@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mahmoud.newsapp.MainActivity
@@ -45,6 +46,10 @@ class SavedNewsFragment : Fragment() {
                 bundle
             )
         }
+
+        viewModel.getSavedNews().observe(viewLifecycleOwner, Observer{ articles ->
+            newsAdapter.differ.submitList(articles)
+        })
 
     }
 

@@ -33,7 +33,6 @@ class ArticleFragment : Fragment() {
             webViewClient = WebViewClient()
             loadUrl(article.url)
             Log.v("ArticleFragment", article.url)
-            Toast.makeText(requireContext(), article.url, Toast.LENGTH_SHORT).show()
         }
 
         /**

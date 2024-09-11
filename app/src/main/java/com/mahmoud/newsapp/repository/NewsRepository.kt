@@ -1,6 +1,7 @@
 package com.mahmoud.newsapp.repository
 
 import com.mahmoud.newsapp.api.RetrofitInstance
+import com.mahmoud.newsapp.database.ArticleDao
 import com.mahmoud.newsapp.database.ArticlesDatabase
 import com.mahmoud.newsapp.models.Article
 

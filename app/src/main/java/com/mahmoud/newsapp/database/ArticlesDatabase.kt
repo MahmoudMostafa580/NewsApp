@@ -15,6 +15,8 @@ abstract class ArticlesDatabase : RoomDatabase() {
 
     companion object {
         private const val DB_NAME = "articles_db.db"
+
+        @Volatile
         private var INSTANCE: ArticlesDatabase? = null
 
         fun getInstance(context: Context): ArticlesDatabase {
@@ -22,7 +24,7 @@ abstract class ArticlesDatabase : RoomDatabase() {
                 var instance = INSTANCE
                 if (instance == null) {
                     instance = Room.databaseBuilder(
-                        context,
+                        context.applicationContext,
                         ArticlesDatabase::class.java,
                         DB_NAME
                     ).build()

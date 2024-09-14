@@ -68,6 +68,9 @@ class BreakingNewsFragment : Fragment() {
                         newsAdapter.differ.submitList(newsResponse.articles.toList())
                         val totalPage = newsResponse.totalResults / 20 + 2
                         isLastPage = viewModel.breakingNewsPage == totalPage
+                        if (isLastPage){
+                            breakingNewsBinding.rvBreakingNews.setPadding(0,0,0,0)
+                        }
                     }
                 }
 

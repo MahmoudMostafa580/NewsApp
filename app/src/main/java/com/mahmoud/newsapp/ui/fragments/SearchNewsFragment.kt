@@ -69,7 +69,7 @@ class SearchNewsFragment : Fragment() {
          * Delay for listener on search edit text for search query
          */
         var job: Job? = null
-        binding.etSearch.addTextChangedListener { editable ->
+        binding.etSearch.editText?.addTextChangedListener { editable ->
             job?.cancel()
             job = MainScope().launch {
                 delay(SEARCH_NEWS_TIME_DELAY)

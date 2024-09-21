@@ -1,14 +1,13 @@
 package com.mahmoud.newsapp.ui.fragments
 
 import android.os.Bundle
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import android.widget.SearchView
 import android.widget.Toast
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -57,7 +56,7 @@ class SearchNewsFragment : Fragment() {
 
 
         newsAdapter.setOnItemClickListener {
-            val bundle= Bundle().apply {
+            val bundle = Bundle().apply {
                 putSerializable("article", it)
             }
             findNavController().navigate(
@@ -69,17 +68,47 @@ class SearchNewsFragment : Fragment() {
          * Delay for listener on search edit text for search query
          */
         var job: Job? = null
-        binding.etSearch.editText?.addTextChangedListener { editable ->
-            job?.cancel()
-            job = MainScope().launch {
-                delay(SEARCH_NEWS_TIME_DELAY)
-                editable?.let{
-                    if (editable.toString().isNotEmpty()){
-                        viewModel.searchNews(editable.toString())
+//        binding.etSearch.editText?.addTextChangedListener { editable ->
+//            job?.cancel()
+//            job = MainScope().launch {
+//                delay(SEARCH_NEWS_TIME_DELAY)
+//                editable?.let{
+//                    if (editable.toString().isNotEmpty()){
+//                        viewModel.searchNews(editable.toString())
+//                    }
+//                }
+//            }
+//        }
+        binding.etSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+//                job?.cancel()
+//                job = MainScope().launch {
+//                    delay(SEARCH_NEWS_TIME_DELAY)
+//                    query?.let {
+//                        if (query.isNotEmpty()) {
+//                            viewModel.searchNews(query)
+//                        }else{
+//                            newsAdapter.differ.submitList(null)
+//                        }
+//                    }
+//                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                job?.cancel()
+                job = MainScope().launch {
+                    delay(SEARCH_NEWS_TIME_DELAY)
+                    newText?.let {
+                        if (newText.isNotEmpty()) {
+                            viewModel.searchNews(newText)
+                        }
                     }
                 }
+                return false
             }
-        }
+
+        })
 
         /**
          * Observe on searchNewsLiveData for incoming changes in data retrieved.
@@ -90,10 +119,11 @@ class SearchNewsFragment : Fragment() {
                     hideProgressBar()
                     response.data?.let { newsResponse ->
                         newsAdapter.differ.submitList(newsResponse.articles.toList())
+                        newsAdapter.notifyItemRangeChanged(0, newsResponse.articles.size)
                         val totalPage = newsResponse.totalResults / 20 + 2
                         isLastPage = viewModel.searchNewsPage == totalPage
-                        if (isLastPage){
-                            binding.rvSearchNews.setPadding(0,0,0,0)
+                        if (isLastPage) {
+                            binding.rvSearchNews.setPadding(0, 0, 0, 0)
                         }
                     }
                 }
@@ -101,7 +131,9 @@ class SearchNewsFragment : Fragment() {
                 is Resource.Error -> {
                     hideProgressBar()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An Error Occurred: $message", Toast.LENGTH_SHORT).show()
+                        Log.e(TAG, "An Error Occurred: $message")
+                        Toast.makeText(activity, "An Error Occurred: $message", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
 

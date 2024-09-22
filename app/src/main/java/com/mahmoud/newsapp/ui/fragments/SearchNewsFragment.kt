@@ -101,7 +101,13 @@ class SearchNewsFragment : Fragment() {
                     delay(SEARCH_NEWS_TIME_DELAY)
                     newText?.let {
                         if (newText.isNotEmpty()) {
-                            viewModel.searchNews(newText)
+                            if (binding.etSearch.hasFocus()){
+                                viewModel.searchNewsResponse = null
+                                viewModel.searchNewsPage = 1
+                                viewModel.searchNews(newText)
+                            }
+                        }else{
+                            newsAdapter.differ.submitList(listOf())
                         }
                     }
                 }
@@ -119,12 +125,11 @@ class SearchNewsFragment : Fragment() {
                     hideProgressBar()
                     response.data?.let { newsResponse ->
                         newsAdapter.differ.submitList(newsResponse.articles.toList())
-                        newsAdapter.notifyItemRangeChanged(0, newsResponse.articles.size)
-                        val totalPage = newsResponse.totalResults / 20 + 2
-                        isLastPage = viewModel.searchNewsPage == totalPage
-                        if (isLastPage) {
-                            binding.rvSearchNews.setPadding(0, 0, 0, 0)
-                        }
+//                        val totalPage = newsResponse.totalResults / 20 + 2
+//                        isLastPage = viewModel.searchNewsPage == totalPage
+//                        if (isLastPage) {
+//                            binding.rvSearchNews.setPadding(0, 0, 0, 0)
+//                        }
                     }
                 }
 

@@ -66,7 +66,9 @@ class BreakingNewsFragment : Fragment() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { newsResponse ->
-                        newsAdapter.differ.submitList(newsResponse.articles.toList())
+                        val articles = newsResponse.articles
+                        articles.removeAll { it.title == "[Removed]" }
+                        newsAdapter.differ.submitList(articles.toList())
                         val totalPage = newsResponse.totalResults / 20 + 2
                         isLastPage = viewModel.breakingNewsPage == totalPage
                         if (isLastPage){
